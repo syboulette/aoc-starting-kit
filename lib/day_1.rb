@@ -1,23 +1,18 @@
-require_relative "./aoc"
+require "csv"
 
-class Day1 < AOC
-  def solve(part:)
-    data = lazy_load_data.map(&:to_i)
-    if part == 1
-      count(data)
-    else
-      data
-        .each_cons(3)
-        .map(&:sum)
-        .then { |data| count(data) }
-    end
-  end
+data_file = "data/day1.csv"
 
-  def count(data)
-    data
-      .each_cons(2)
-      .filter { |source, target|  source < target}
-      .force
-      .length
+arr = []
+num = 0
+
+CSV.foreach(data_file) do |e|
+  num += e[0].to_i unless e[0].nil?
+  if e[0].nil?
+    arr.push(num)
+    num = 0
   end
 end
+
+p arr.max
+
+p arr.sort.reverse.first(3).sum
